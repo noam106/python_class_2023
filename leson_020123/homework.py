@@ -5,12 +5,14 @@ from typing import List
 
 class Transaction(ABC):
 
-    def __init__(self, date: datetime, amount: float, currency: str, account_limit: float, usd_allowed: bool = False) -> object:
+    def __init__(self, date: datetime, amount: float, currency: str, account_limit: float, exchange_rate: float,
+                 usd_allowed: bool = False) -> object:
         self._date = date
         self._amount = amount
         self._currency = currency
         self._account_limit = account_limit
         self._usd_allowed = usd_allowed
+        self._exchange_rate = exchange_rate
         self._nis_balance: float = 0
         self._usd_balance: float = 0
 
@@ -47,6 +49,14 @@ class Transaction(ABC):
     def set_usd_balance(self, new_balance: float):
         self._usd_balance = new_balance
 
+    def get_exchange_rate(self):
+        return self._exchange_rate
+
+    def set_exchange_rate(self, new_rate: float):
+        if new_rate > 0 :
+            self._exchange_rate = new_rate
+
+
 
     def is_action_allowed(self):
         if self._currency == 'NIS' and self._amount <= self._nis_balance:
@@ -56,6 +66,37 @@ class Transaction(ABC):
         else:
             return False
 
+    def deposit(self):
+        if self._currency == 'NIS':
+            new_balance_1 = self._amount + self._nis_balance
+            self.set_nis_balance(self, new_balance_1)
+            return True
+        elif self._currency == 'USD' and self._usd_allowed is True:
+            new_balance_1 = self._amount + self._usd_balance
+            self.set_usd_balance(self, new_balance_1)
+            return True
+        else:
+            return False
+
+
+    def withdrawal(self):
+        if self.is_action_allowed() is True:
+            self._amount = self._amount * -1
+            if self._currency == 'NIS':
+                new_balance_1 = self._amount + self._nis_balance
+                self.set_nis_balance(self, new_balance_1)
+                return True
+            elif self._currency == 'USD' and self._usd_allowed is True:
+                new_balance_1 = self._amount + self._usd_balance
+                self.set_usd_balance(self, new_balance_1)
+                return True
+        else:
+            return False
+
+
+
+
+
     @abstractmethod
     def action(self):
         pass
@@ -64,22 +105,55 @@ class Transaction(ABC):
 class Deposit(Transaction):
 
     def __init__(self, date: datetime, amount: float, currency: str, account_limit: float, usd_allowed: bool = False):
-        super().__init__(date, amount, currency,  account_limit, usd_allowed = False)
+        super().__init__(date, amount, currency, account_limit, usd_allowed=False)
 
         self._deposit_log = {}
 
-
-    def action(self):
+    def action(self) -> bool:
         if super().is_action_allowed() is True:
             if self._date in self._deposit_log:
-                self._deposit_log[self.date].append(f'deposit amount is {self._amount}', f"The currncy is {self.currency}")
+                self._deposit_log[self.date].append(f'deposit amount is {self._amount}',
+                                                    f"The currncy is {self.currency}")
             else:
                 self._deposit_log[self._date] = (f'deposit amount is {self._amount}', f"The currncy is {self.currency}")
+            return True
+        else:
+            return False
 
 
+class Withdrawal(Transaction):
 
-#leetcode:
-#1
+    def __init__(self, date: datetime, amount: float, currency: str, account_limit: float, usd_allowed: bool = False):
+        super().__init__(date, amount, currency, account_limit, usd_allowed=False)
+
+        self._withdrawal_log = {}
+
+    def action(self)-> bool:
+
+        if super().is_action_allowed() is True:
+            if self._date in self._withdrawal_log:
+                self._withdrawal_log[self.date].append(f'Withdrawal amount is {self._amount}',
+                                                       f"The currncy is {self.currency}")
+            else:
+                self._withdrawal_log[self._date] = (
+                    f'Withdrawal amount is {self._amount}', f"The currncy is {self.currency}")
+            return True
+        else:
+            return False
+
+class Conversion(Transaction):
+
+    def __init__(self, date: datetime, amount: float, currency: str, account_limit: float, usd_allowed: bool = False):
+        super().__init__(date, amount, currency, account_limit, usd_allowed=False)
+
+        self._conversion_log = {}
+
+    def action(self) -> bool:
+        if self.is_action_allowed() is True:
+
+
+# leetcode:
+# 1
 # class Solution:
 #
 #     def __init__(self, word: str):
@@ -122,6 +196,4 @@ class Deposit(Transaction):
 # print(maxProfit(prices = [7,1,5,3,6,4]))
 
 
-#3
-
-
+# 3
