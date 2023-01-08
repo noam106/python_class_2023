@@ -174,10 +174,20 @@ class Conversion(Transaction):
     def action(self) -> bool:
         if self.is_action_allowed() is True:
             if self._date in self._conversion_log:
-                if super()._currency = "USD":
-                    self._conversion_log[self._date].append(f'converted from {self._currency} to NIS the amount of {self._amount} in the exchange_rate of {self._exchange_rate})
-                elif
-
+                if super()._currency == "USD":
+                    self._conversion_log[self._date].append(f'converted from {self._currency} to NIS the amount of {self._amount} in the exchange_rate of {self._exchange_rate}')
+                elif super()._currency == "NIS":
+                    self._conversion_log[self._date].append(f'converted from {self._currency} to USD the amount of {self._amount} in the exchange_rate of {1 / self._exchange_rate}')
+                return True
+            else:
+                self._conversion_log[self._date] = []
+            if super()._currency == "USD":
+                self._conversion_log[self._date].append(f'converted from {self._currency} to NIS the amount of {self._amount} in the exchange_rate of {self._exchange_rate}')
+            elif super()._currency == "NIS":
+                self._conversion_log[self._date].append(f'converted from {self._currency} to USD the amount of {self._amount} in the exchange_rate of {1 / self._exchange_rate}')
+            return True
+        else:
+            return False
 
 
 # leetcode:
