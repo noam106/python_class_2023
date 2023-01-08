@@ -68,12 +68,12 @@ class Transaction(ABC):
 
     def deposit(self):
         if self._currency == 'NIS':
-            new_balance_1 = self._amount + self._nis_balance
-            self.set_nis_balance(self, new_balance_1)
+            new_balance = self._amount + self._nis_balance
+            self.set_nis_balance(self, new_balance)
             return True
         elif self._currency == 'USD' and self._usd_allowed is True:
-            new_balance_1 = self._amount + self._usd_balance
-            self.set_usd_balance(self, new_balance_1)
+            new_balance = self._amount + self._usd_balance
+            self.set_usd_balance(self, new_balance)
             return True
         else:
             return False
@@ -83,15 +83,35 @@ class Transaction(ABC):
         if self.is_action_allowed() is True:
             self._amount = self._amount * -1
             if self._currency == 'NIS':
-                new_balance_1 = self._amount + self._nis_balance
-                self.set_nis_balance(self, new_balance_1)
+                new_balance = self._amount + self._nis_balance
+                self.set_nis_balance(self, new_balance)
                 return True
             elif self._currency == 'USD' and self._usd_allowed is True:
                 new_balance_1 = self._amount + self._usd_balance
-                self.set_usd_balance(self, new_balance_1)
+                self.set_usd_balance(self, new_balance)
                 return True
         else:
             return False
+
+    def conversion(self):
+        if self._usd_allowed is True:
+            if self.is_action_allowed() is True:
+                self._amount = self._amount * -1
+                if self._currency == 'NIS':
+                    usd_balance = self._amount * self._exchange_rate * -1
+                    nis_balance_1 = (self._amount + self._nis_balance)
+                    self.set_nis_balance(self, nis_balance_1)
+                    self.set_usd_balance(self, usd_balance)
+                    return True
+                elif self._currency == 'USD' and self._usd_allowed is True:
+                    usd_balance_1 = self._amount + self._usd_balance
+                    self.set_usd_balance(self, usd_balance_1)
+                    nis_balance = (1 / self._exchange_rate) * self._amount * -1
+                    self.set_nis_balance(self, nis_balance)
+                    return True
+            else:
+                return False
+
 
 
 
@@ -112,10 +132,12 @@ class Deposit(Transaction):
     def action(self) -> bool:
         if super().is_action_allowed() is True:
             if self._date in self._deposit_log:
-                self._deposit_log[self.date].append(f'deposit amount is {self._amount}',
+                self._deposit_log[self._date].append(f'deposit amount is {self._amount}',
                                                     f"The currncy is {self.currency}")
             else:
-                self._deposit_log[self._date] = (f'deposit amount is {self._amount}', f"The currncy is {self.currency}")
+                self._deposit_log[self._date] = []
+                self._deposit_log[self._date].append(f'deposit amount is {self._amount}',
+                                                    f"The currncy is {self.currency}")
             return True
         else:
             return False
@@ -132,24 +154,30 @@ class Withdrawal(Transaction):
 
         if super().is_action_allowed() is True:
             if self._date in self._withdrawal_log:
-                self._withdrawal_log[self.date].append(f'Withdrawal amount is {self._amount}',
+                self._withdrawal_log[self._date].append(f'Withdrawal amount is {self._amount}',
                                                        f"The currncy is {self.currency}")
             else:
-                self._withdrawal_log[self._date] = (
-                    f'Withdrawal amount is {self._amount}', f"The currncy is {self.currency}")
+                self._withdrawal_log[self._date] = []
+                self._withdrawal_log[self._date].append(f'Withdrawal amount is {self._amount}',
+                                                       f"The currncy is {self.currency}")
             return True
         else:
             return False
 
 class Conversion(Transaction):
 
-    def __init__(self, date: datetime, amount: float, currency: str, account_limit: float, usd_allowed: bool = False):
-        super().__init__(date, amount, currency, account_limit, usd_allowed=False)
+    def __init__(self, date: datetime, amount: float, currency: str, account_limit: float, exchange_rate: float, usd_allowed: bool = False):
+        super().__init__(date, amount, currency, account_limit, exchange_rate, usd_allowed=False)
 
         self._conversion_log = {}
 
     def action(self) -> bool:
         if self.is_action_allowed() is True:
+            if self._date in self._conversion_log:
+                if super()._currency = "USD":
+                    self._conversion_log[self._date].append(f'converted from {self._currency} to NIS the amount of {self._amount} in the exchange_rate of {self._exchange_rate})
+                elif
+
 
 
 # leetcode:
