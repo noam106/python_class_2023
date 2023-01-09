@@ -48,10 +48,10 @@ class Bath(Room):
         super().__init__(size, width, length, window_amount, has_balcony_door)
 
         self._facilities = {
-            toilet : 0,
-            sink : 0,
-            bath : 0,
-            shower : 0
+            'toilet' : 0,
+            'sink' : 0,
+            'bath' : 0,
+            'shower' : 0
         }
 
     def get_facilities(self):

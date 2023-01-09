@@ -6,7 +6,7 @@ from typing import List
 class Transaction(ABC):
 
     def __init__(self, date: datetime, amount: float, currency: str, account_limit: float, exchange_rate: float,
-                 usd_allowed: bool = False) -> object:
+                 usd_allowed: bool = False):
         self._date = date
         self._amount = amount
         self._currency = currency
@@ -69,26 +69,25 @@ class Transaction(ABC):
     def deposit(self):
         if self._currency == 'NIS':
             new_balance = self._amount + self._nis_balance
-            self.set_nis_balance(self, new_balance)
+            self.set_nis_balance(new_balance)
             return True
         elif self._currency == 'USD' and self._usd_allowed is True:
             new_balance = self._amount + self._usd_balance
-            self.set_usd_balance(self, new_balance)
+            self.set_usd_balance(new_balance)
             return True
         else:
             return False
-
 
     def withdrawal(self):
         if self.is_action_allowed() is True:
             self._amount = self._amount * -1
             if self._currency == 'NIS':
                 new_balance = self._amount + self._nis_balance
-                self.set_nis_balance(self, new_balance)
+                self.set_nis_balance(new_balance)
                 return True
             elif self._currency == 'USD' and self._usd_allowed is True:
                 new_balance_1 = self._amount + self._usd_balance
-                self.set_usd_balance(self, new_balance)
+                self.set_usd_balance(new_balance_1)
                 return True
         else:
             return False
@@ -100,14 +99,14 @@ class Transaction(ABC):
                 if self._currency == 'NIS':
                     usd_balance = self._amount * self._exchange_rate * -1
                     nis_balance_1 = (self._amount + self._nis_balance)
-                    self.set_nis_balance(self, nis_balance_1)
-                    self.set_usd_balance(self, usd_balance)
+                    self.set_nis_balance(nis_balance_1)
+                    self.set_usd_balance(usd_balance)
                     return True
                 elif self._currency == 'USD' and self._usd_allowed is True:
                     usd_balance_1 = self._amount + self._usd_balance
-                    self.set_usd_balance(self, usd_balance_1)
+                    self.set_usd_balance(usd_balance_1)
                     nis_balance = (1 / self._exchange_rate) * self._amount * -1
-                    self.set_nis_balance(self, nis_balance)
+                    self.set_nis_balance(nis_balance)
                     return True
             else:
                 return False
