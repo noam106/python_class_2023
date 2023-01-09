@@ -43,15 +43,15 @@ class Room(Space):
 
 class Bath(Room):
 
-    def __init__(self, size: float, width: float, length, float, window_amount: int,
+    def __init__(self, size: float, width: float, length: float, window_amount: int,
                  has_balcony_door: bool):
         super().__init__(size, width, length, window_amount, has_balcony_door)
 
         self._facilities = {
-            'toilet' : 0,
-            'sink' : 0,
-            'bath' : 0,
-            'shower' : 0
+            'toilet': 0,
+            'sink': 0,
+            'bath': 0,
+            'shower': 0
         }
 
     def get_facilities(self):
@@ -64,7 +64,7 @@ class Bath(Room):
 
 class Kitchen(Room):
 
-    def __init__(self, size: float, width: float, length, float, window_amount: int,
+    def __init__(self, size: float, width: float, length: float, window_amount: int,
                  has_balcony_door: bool):
         super().__init__(size, width, length, window_amount, has_balcony_door)
 
