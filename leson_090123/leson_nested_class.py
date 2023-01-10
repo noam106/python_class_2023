@@ -1,5 +1,6 @@
 import datetime
 import time
+from operator import itemgetter
 
 
 class Table:
@@ -77,7 +78,6 @@ class Table:
         return self._reservation_start_time + datetime.datetime(maximum_time_limit)
 
 
-
 class TableReservationSystem:
 
     def __init__(self, restaurant_name: str, max_time_limit: datetime, list_of_table: list):
@@ -129,9 +129,11 @@ class TableReservationSystem:
             temp_dict = {}
             if table.get_num_of_seats() >= num_guests:
                 soonest_available_list.append({})
-                soonest_available_list[-1][table.time_left()] = f'The table num is {table.get_table_id()},' \
-                                                                f' and the num of seats are {table.get_num_of_seats()}'
-        return sorted(soonest_available_list, reverse=True)
+                soonest_available_list[-1]['time left'] = table.time_left()
+                soonest_available_list[-1]['num of seats'] = table.get_num_of_seats()
+        return sorted(soonest_available_list,key=itemgetter('time left'),reverse=True)
+
+
 
 
 
