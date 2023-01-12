@@ -70,12 +70,12 @@ class Table:
 
     def time_left(self):
         if self._is_occupied is False:
-            i = datetime.datetime.now
+            i = datetime.datetime.now()
             time_left = i - datetime.timedelta(self._reservation_start_time)
             return time_left
 
     def get_available_hour(self, maximum_time_limit: datetime):
-        return self._reservation_start_time + datetime.datetime(maximum_time_limit)
+        return self._reservation_start_time + datetime.timedelta(maximum_time_limit)
 
 
 class TableReservationSystem:
@@ -86,6 +86,7 @@ class TableReservationSystem:
         self._max_time_limit = max_time_limit
         self._table_dict: dict[int, Table] = {}
         self._list_of_table = list_of_table
+        self._reserve_tables: dict [datetime, list] = {}
 
     def update_table_dict(self):
         for num, seats in enumerate(self._list_of_table):
@@ -131,27 +132,26 @@ class TableReservationSystem:
                 soonest_available_list.append({})
                 soonest_available_list[-1]['time left'] = table.time_left()
                 soonest_available_list[-1]['num of seats'] = table.get_num_of_seats()
-        return sorted(soonest_available_list,key=itemgetter('time left'),reverse=True)
+        return sorted(soonest_available_list, key=itemgetter('time left'), reverse=True)
 
+    def get_tables_with_less_than_x_minutes_left(self, num_of_seats, num_of_min: datetime):
+        table_dict = {}
+        for table in self._table_dict.values():
+            # temp_dict = {}
+            if table.get_num_of_seats() >= num_of_seats:
+                if table.time_left() <= num_of_min:
+                    table_dict[table.get_table_id()] = table.time_left()
+        return table_dict
 
+    def table_availability(self, time_req: datetime, num_of_guests: int) -> bool:
+        if self.get_tables_with_less_than_x_minutes_left()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def reserve_tables(self, reserve_time: datetime, num_guests: int):
+        if reserve_time > datetime.datetime.now():
+            if reserve_time in self._reserve_tables:
+                self._reserve_tables[reserve_time].append({})
+            for table in self._table_dict.values():
+                if table.get_num_of_seats() >= num_guests:
+                    if
 
 
