@@ -3,23 +3,25 @@ from abc import ABC, abstractmethod
 
 class Address:
 
-def __init__(self, street, city, floor, zipcode):
-    self._street = street
-    self._city = city
-    self._floor = floor
-    self._zipcode = zipcode
+    def __init__(self, street, city, floor, zipcode):
+        self._street = street
+        self._city = city
+        self._floor = floor
+        self._zipcode = zipcode
 
-def get_street(self):
-    return self._street
+    def get_street(self):
+        return self._street
 
-def get_city(self):
-    return self._city
+    def get_city(self):
+        return self._city
 
-def get_floor(self):
-    return self._floor
+    def get_floor(self):
+        return self._floor
 
-def get_zipcode(self):
-    return self._zipcode
+    def get_zipcode(self):
+        return self._zipcode
+
+
 class Space(ABC):
 
     def __init__(self, size: float, width: float, length: float):
@@ -132,7 +134,7 @@ class Kitchen(Room):
 
 class Balcony(Space):
 
-    def __init__(self,size: float, width: float, length: float, has_gas: bool, has_water: bool):
+    def __init__(self, size: float, width: float, length: float, has_gas: bool, has_water: bool):
         super().__init__(size, width, length)
         self._has_gas = has_gas
         self._has_water = has_water
@@ -150,16 +152,13 @@ class Balcony(Space):
         self._has_water = is_water
 
 
-def get_floor_num():
-    return get_floor()
-
-
-class Flat():
+class Flat:
 
     def __init__(self, address: Address, num_of_floor: int):
         self._address = address
         self._num_of_floor = num_of_floor
-        self._dict_of_room: dict[int, Room] = {}
+        self._dict_of_room: dict[str, Room] = {}
+        self._dict_of_balcony: dict[str, Balcony] = {}
 
     def get_address(self):
         return self._address
@@ -170,5 +169,25 @@ class Flat():
     def get_dict_of_room(self):
         return self._dict_of_room
 
-    def add_room(self,):
+    def get_floor_num(self):
+        return self._address.get_floor()
+
+    def add_room(self, size: float, width: float, length: float, windows_amount: int,
+                 has_balcony_door: bool):
+        num_room_place = len(self._dict_of_room) + 1
+        room = Room(size, width, length, windows_amount, has_balcony_door)
+        self._dict_of_room[f'room num {num_room_place}'] = room
+
+    def add_balcony(self, size: float, width: float, length: float, has_gas: bool, has_water: bool, room_num: int):
+        if room_num in self._dict_of_room:
+            if self._dict_of_room[f'room num {room_num}'].get_has_balcony_door():
+                self._dict_of_balcony[f'balcony for room{room_num}'] = Balcony(size, width, length, has_gas, has_water)
+                return True
+        else:
+            return False
+
+    def add_bathroom(self):
+
+
+
 
