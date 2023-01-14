@@ -186,8 +186,37 @@ class Flat:
         else:
             return False
 
-    def add_bathroom(self):
+    def add_bathroom(self, size: float, width: float, length: float, window_amount: int,
+                     has_balcony_door: bool, num_of_room_bath: str):
+        if num_of_room_bath not in self._dict_of_room:
+            self._dict_of_room[num_of_room_bath] = Bath(size, width, length, window_amount, has_balcony_door)
+            return True
+        else:
+            return False
 
+    def add_kitchen(self, size: float, width: float, length: float, window_amount: int,
+                    has_balcony_door: bool, amount_upper_closets: float, amount_lower_closets: float,
+                    material_work_surface: str, num_of_room_kitchen: str):
+        if num_of_room_kitchen not in self._dict_of_room:
+            self._dict_of_room[num_of_room_kitchen] = Kitchen(size, width, length, window_amount,
+                                                              has_balcony_door, amount_upper_closets,
+                                                              amount_lower_closets, material_work_surface)
+            return True
+        else:
+            return False
 
+    def get_flat_size(self):
+        flat_size = 0
+        for size in self._dict_of_room.values():
+            flat_size += size.get_size()
+        return flat_size
+
+    def get_rooms_number(self):
+        return len(self._dict_of_room)
+
+    def get_balconies_number(self):
+        return len(self._dict_of_balcony)
+
+    def
 
 
