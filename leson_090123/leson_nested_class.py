@@ -127,7 +127,7 @@ class TableReservationSystem:
     def get_soonest_available_tables(self, num_guests: int):
         soonest_available_list = []
         for table in self._table_dict.values():
-            temp_dict = {}
+            # temp_dict = {}
             if table.get_num_of_seats() >= num_guests:
                 soonest_available_list.append({})
                 soonest_available_list[-1]['time left'] = table.time_left()
@@ -143,8 +143,8 @@ class TableReservationSystem:
                     table_dict[table.get_table_id()] = table.time_left()
         return table_dict
 
-    def table_availability(self, time_req: datetime, num_of_guests: int) -> bool:
-        if self.get_tables_with_less_than_x_minutes_left()
+    # def table_availability(self, time_req: datetime, num_of_guests: int) -> bool:
+    #     if self.get_tables_with_less_than_x_minutes_left()
 
     def reserve_tables(self, reserve_time: datetime, num_guests: int):
         if reserve_time > datetime.datetime.now():
@@ -152,6 +152,3 @@ class TableReservationSystem:
                 self._reserve_tables[reserve_time].append({})
             for table in self._table_dict.values():
                 if table.get_num_of_seats() >= num_guests:
-                    if
-
-

@@ -217,6 +217,5 @@ class Flat:
     def get_balconies_number(self):
         return len(self._dict_of_balcony)
 
-    def
 
 
