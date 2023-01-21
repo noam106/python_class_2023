@@ -1,3 +1,4 @@
+import csv
 import os
 import datetime
 
@@ -48,16 +49,23 @@ def apple_stock_sum(stock_file_path: str) -> str:
                 count += 1
             else:
                 average_dict[year_1] = {
-                    'Minimum price': temp_min/count,
-                    'Max price': temp_max / count,
-                    'volumes': temp_volumes / count
+                    'Minimum price': str(temp_min/count),
+                    'Max price': str(temp_max / count),
+                    'volumes': str(temp_volumes / count)
                 }
                 year_1 = year
                 count = 0
                 temp_volumes = 0
                 temp_min = 0
                 temp_max = 0
-    with open('\\data\\apple_avrage.json', 'w') as f
+    with open('names.csv', 'w', newline='') as csvfile:
+        fieldnames = ['year', 'max price', 'min price', 'volumes']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for year_in in average_dict:
+            writer.writerow({'year': year_in, 'max price': year_in['Max price'], 'min price': year_in['Minimum price'],
+                             'volumes': year_in['volumes']})
     return average_dict
 
 
