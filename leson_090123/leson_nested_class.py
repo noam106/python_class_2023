@@ -146,9 +146,9 @@ class TableReservationSystem:
     # def table_availability(self, time_req: datetime, num_of_guests: int) -> bool:
     #     if self.get_tables_with_less_than_x_minutes_left()
 
-    def reserve_tables(self, reserve_time: datetime, num_guests: int):
-        if reserve_time > datetime.datetime.now():
-            if reserve_time in self._reserve_tables:
-                self._reserve_tables[reserve_time].append({})
-            for table in self._table_dict.values():
-                if table.get_num_of_seats() >= num_guests:
+    # def reserve_tables(self, reserve_time: datetime, num_guests: int):
+    #     if reserve_time > datetime.datetime.now():
+    #         if reserve_time in self._reserve_tables:
+    #             self._reserve_tables[reserve_time].append({})
+    #         for table in self._table_dict.values():
+    #             if table.get_num_of_seats() >= num_guests:

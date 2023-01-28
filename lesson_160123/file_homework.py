@@ -72,4 +72,30 @@ def apple_stock_sum(stock_file_path: str) -> str:
 print(apple_stock_sum('C:\\Users\\USER001\\PycharmProjects\\fs-7732-3\\lesson18\\data\\AAPL.csv'))
 
 
+class EBook:
+    def __init__(self, dir_file: str, amount_words_per_page: int):
+        self._amount_words_per_page = amount_words_per_page
+        self._dir_file = dir_file
+        with open(self._dir_file) as file_handler:
+            self._content = file_handler.read()
 
+    def get_amount_words_per_page(self):
+        return self._amount_words_per_page
+
+    def set_amount_words_per_page(self, new_num: int):
+        if new_num > 0:
+            self._amount_words_per_page = new_num
+
+    def get_dir_file(self):
+        return self._dir_file
+
+    def get_content(self):
+        return self._content
+
+    def is_file_exist(self) -> bool:
+        if os.path.exists(self._dir_file):
+            return True
+        else:
+            return False
+
+    def dividing_to_pages(self) -> int:
