@@ -98,4 +98,8 @@ class EBook:
         else:
             return False
 
+    # how to build a content to every page?
+    # what dose it mean bookmark?
     def dividing_to_pages(self) -> int:
+        pass
+
