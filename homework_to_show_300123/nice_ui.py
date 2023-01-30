@@ -12,4 +12,6 @@ if __name__ == '__main__':
                 continue
         else:
             break
-
+    user_mode = input(f'{user_name}, would you mined tell me how do you feel today? ')
+    user_emotion = backend.usre_feeling(user_mode)
+    print(f'it seems you feel {user_emotion} today, i have just the rigth chak noris fact for you.')
