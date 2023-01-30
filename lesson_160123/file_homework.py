@@ -63,7 +63,7 @@ def apple_stock_sum(stock_file_path: str) -> str:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
         writer.writeheader()
-        for year_in in average_dict:
+        for year_in in average_dict.values():
             writer.writerow({'year': year_in, 'max price': year_in['Max price'], 'min price': year_in['Minimum price'],
                              'volumes': year_in['volumes']})
     return average_dict
@@ -98,8 +98,4 @@ class EBook:
         else:
             return False
 
-    # how to build a content to every page?
-    # what dose it mean bookmark?
-    def dividing_to_pages(self) -> int:
-        pass
-
+    # def dividing_to_pages(self) -> int:
