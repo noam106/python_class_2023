@@ -65,7 +65,7 @@ def order_grades(log_dict: list):
     return x
 
 def order_by_time(log_dict: list):
-    x = list(map(datetime.time.))
+    x = list(map(datetime.datetime.strptime()))
 
 print(order_grades(['great', 'good', 'bad','great', 'good', 'bad','great', 'good', 'bad']))
 
