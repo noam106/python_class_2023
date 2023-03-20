@@ -121,7 +121,7 @@ def create_new_customer():
 #     sql = f"INSERT INTO customers ({','.join(request.form.keys())}) VALUES ({','.join(['%s'] * 3)})"
 #
 #     # problem here!
-#     # sql = f"INSERT INTO customers (passport_num, name, address) VALUES (%s, %s, %s)"
+#     # sql = f"INSER4T INTO customers (passport_num, name, address) VALUES (%s, %s, %s)"
 #
 #     with conn:
 #         with conn.cursor() as cur:
@@ -131,8 +131,30 @@ def create_new_customer():
 #                 return {}, 201
 #     return {}, 500
 
-@app.route("/api/v1/customers/all", methods = 'GET')
 
+@app.route("/api/v1/customers", methods = ['GET'])
+def get_all_customers():
+    new_data = request.args
+    # num_of_row = new_data['result_per_page']
+    # num_page = new_data['page_num']
+    # param_tuple = {num_page, num_of_row }
+    # print(param_tuple)
+    sql = f"select * from customers limit %s offset (%s);"
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, tuple(new_data.values()), )
+            result = cur.fetchall()
+    if result:
+        ret_data = []
+        for i in result:
+            data_dict = {'id': i[0],
+                         'passport': i[1],
+                         'name': i[2],
+                         'address': i[3]}
+            ret_data.append(data_dict)
+        return jsonify(ret_data)
+    else:
+        return {'error': f'customer with id  does not exist'}, 404
 
 
 

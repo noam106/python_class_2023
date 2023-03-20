@@ -67,11 +67,11 @@ def sentences_divide():
        data[i] = sentence.text
     return jsonify(data)
 
-@app.route('/api/v1/pos/<text>')
-def pos_analesys(text):
-    data = {}
-    for i, sentence in enumerate(text):
-        for
+# @app.route('/api/v1/pos/<text>')
+# def pos_analesys(text):
+#     data = {}
+#     for i, sentence in enumerate(text):
+#         # for
 
 if __name__ == '__main__':
     app.run(debug=True)
